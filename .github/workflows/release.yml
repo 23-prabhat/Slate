@@ -1,0 +1,83 @@
+name: Publish Fedora installer
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: registry.fedoraproject.org/fedora:44
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    env:
+      RELEASE_TAG: ${{ github.ref_name }}
+    steps:
+      - name: Install runtime and build dependencies
+        run: dnf install -y git python3 python3-pyside6 python3-enchant hunspell-en-US dejavu-sans-fonts make rpm-build tar gzip desktop-file-utils appstream poppler-utils
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Check tag against the application version
+        run: |
+          python3 - <<'PY'
+          import os, re, runpy
+          version = runpy.run_path('src/folio_notepad/__init__.py')['__version__']
+          if not re.fullmatch(r'\d+\.\d+\.\d+', version) or os.environ['RELEASE_TAG'] != 'v' + version:
+              raise SystemExit('Release tag must exactly match v' + version)
+          PY
+      - name: Run the editor regression suite
+        run: make test
+      - name: Validate desktop metadata
+        run: |
+          desktop-file-validate packaging/desktop/org.local.FolioNotepad.desktop
+          appstreamcli validate --no-net --override=url-homepage-missing=info packaging/appstream/org.local.FolioNotepad.metainfo.xml
+      - name: Build and prepare the installer
+        run: |
+          make rpm
+          python3 scripts/prepare_release.py --tag "$RELEASE_TAG"
+      - name: Keep the tested release files
+        uses: actions/upload-artifact@v7
+        with:
+          name: fedora-release
+          path: dist/release/${{ github.ref_name }}/
+          if-no-files-found: error
+          retention-days: 14
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: ${{ github.ref_name }}
+    steps:
+      - name: Download the tested installer
+        uses: actions/download-artifact@v8
+        with:
+          name: fedora-release
+          path: release
+      - name: Verify the release files
+        working-directory: release
+        run: sha256sum -c SHA256SUMS
+      - name: Create the development release and upload assets
+        run: |
+          gh release create "$RELEASE_TAG" release/*.rpm release/SHA256SUMS \
+            --verify-tag --draft --prerelease \
+            --title "Folio Notepad $RELEASE_TAG — Fedora 44" \
+            --notes-file release/RELEASE_NOTES.md
+      - name: Publish the completed release
+        run: gh release edit "$RELEASE_TAG" --draft=false --prerelease

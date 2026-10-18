@@ -4,6 +4,8 @@ A native Qt desktop editor for Fedora KDE: plain text, Markdown, tables, images,
 
 ## Install and launch
 
+Published installers are intended to appear under [GitHub Releases](https://github.com/23-prabhat/Slate/releases). In a release's **Assets**, choose the Fedora `.rpm` file; the Source code ZIP is not an installer. The release workflow is prepared in this repository and first needs to be pushed and triggered with a matching version tag. See [publishing instructions](docs/packaging.md#publish-installers-on-github). `dist/` stays ignored in Git because GitHub Actions builds the installer and uploads it separately.
+
 The built Fedora package is in `dist/folio-notepad-0.4.2-1.fc44.noarch.rpm`. Open it in KDE Discover and install it once. Then search for **Folio Notepad** in the application menu and pin it to your taskbar. It uses Fedora's supported Python/Qt packages and needs no rebuild after ordinary kernel updates. This local RPM is unsigned and has no automatic application-update repository yet.
 
 If Discover does not offer local RPM installation on your setup, the one-time alternative is:
@@ -89,4 +91,4 @@ The [transparent master PNG](resources/icons/folio-notepad-v2.png) and [desktop 
 
 ## License
 
-Application code: GPL-3.0-or-later; see [LICENSE](LICENSE). Qt/PySide and optional dictionary libraries retain their own licenses. The application uses system libraries rather than bundling their binaries into the RPM. Public distribution must first replace the development-only `org.local` identity with an owned namespace.
+Application code: GPL-3.0-or-later; see [LICENSE](LICENSE). Qt/PySide and optional dictionary libraries retain their own licenses. The application uses system libraries rather than bundling their binaries into the RPM. A stable store release should first replace the development-only `org.local` identity with an owned namespace.

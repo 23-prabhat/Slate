@@ -1,7 +1,69 @@
+# Python caches and local environments
 __pycache__/
 *.py[cod]
-build/
-dist/
-.local-state/
+*.egg-info/
 .venv/
+venv/
+.tox/
+.nox/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Generated builds, packages, screenshots and release bundles
+/build/
+/dist/
+*.rpm
+*.whl
+*.flatpak
+*.AppImage
+
+# Local application state and personal notes
+/.local-state/
+/.folio-data/
 *.sqlite*
+*.db
+*.db-wal
+*.db-shm
+*.folio
+*.log
+
+# Environment secrets (keep sanitized example templates shareable)
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# Machine credentials, private keys and local assistant state
+.aws/
+.ssh/
+.gnupg/
+.codex/
+.agents/
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ecdsa
+id_ed25519
+
+# Editor, desktop and temporary files
+.idea/
+.vscode/
+.history/
+.cache/
+.DS_Store
+Thumbs.db
+Desktop.ini
+.directory
+*~
+*.swp
+*.swo
+*.bak
+plan.md
