@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Folio Notepad
+GenericName=Text and Notes Editor
+Comment=Write notes with text, tables, images and drawings
+Exec=folio-notepad %U
+Icon=org.local.FolioNotepad
+Terminal=false
+Categories=Utility;TextEditor;
+MimeType=text/plain;text/markdown;application/x-folio-note;
+StartupNotify=true
+StartupWMClass=org.local.FolioNotepad
+Keywords=notes;notepad;markdown;drawing;editor;

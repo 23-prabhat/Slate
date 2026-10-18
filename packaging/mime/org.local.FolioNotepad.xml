@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-folio-note">
+    <comment>Folio portable note</comment>
+    <sub-class-of type="application/zip"/>
+    <glob pattern="*.folio"/>
+    <icon name="org.local.FolioNotepad"/>
+  </mime-type>
+</mime-info>

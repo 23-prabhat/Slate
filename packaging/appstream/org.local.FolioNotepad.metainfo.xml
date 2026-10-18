@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.local.FolioNotepad</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Folio Notepad</name>
+  <summary>Write notes with tables, images and editable drawings</summary>
+  <developer id="org.local"><name>Folio Notepad contributors</name></developer>
+  <description>
+    <p>Folio Notepad is a native desktop editor for plain text, Markdown, and portable notes. Keep unnamed drafts locally and return to them later.</p>
+    <p>Insert tables, images and editable drawings. Export Markdown with attachments, plain text, PDF, or a portable note. No account is required for editing.</p>
+  </description>
+  <launchable type="desktop-id">org.local.FolioNotepad.desktop</launchable>
+  <provides><binary>folio-notepad</binary><mediatype>application/x-folio-note</mediatype><mediatype>text/plain</mediatype><mediatype>text/markdown</mediatype></provides>
+  <content_rating type="oars-1.1"/>
+  <releases><release version="0.4.2" date="2026-10-18" type="development"/><release version="0.4.1" date="2026-10-18" type="development"/><release version="0.4.0" date="2026-10-18" type="development"/><release version="0.3.0" date="2026-10-18" type="development"/><release version="0.2.1" date="2026-10-18" type="development"/><release version="0.2.0" date="2026-10-18" type="development"/><release version="0.1.0" date="2026-10-18" type="development"/></releases>
+</component>

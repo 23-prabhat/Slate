@@ -1,0 +1,49 @@
+{
+  "app-id": "org.local.FolioNotepad",
+  "runtime": "org.kde.Platform",
+  "runtime-version": "6.11",
+  "sdk": "org.kde.Sdk",
+  "base": "io.qt.PySide.BaseApp",
+  "base-version": "6.11",
+  "command": "folio-notepad",
+  "build-options": {
+    "env": {
+      "BASEAPP_REMOVE_WEBENGINE": "1",
+      "BASEAPP_DISABLE_NUMPY": "1"
+    }
+  },
+  "finish-args": [
+    "--socket=wayland",
+    "--socket=fallback-x11",
+    "--share=ipc",
+    "--device=dri",
+    "--socket=cups",
+    "--env=QT_QPA_PLATFORMTHEME=xdgdesktopportal",
+    "--env=PYTHONPATH=/app/lib/python3.13/site-packages"
+  ],
+  "cleanup-commands": [
+    "/app/cleanup-BaseApp.sh"
+  ],
+  "modules": [
+    {
+      "name": "folio-notepad",
+      "buildsystem": "simple",
+      "build-commands": [
+        "make install PREFIX=/app"
+      ],
+      "sources": [
+        {
+          "type": "dir",
+          "path": "../..",
+          "skip": [
+            "build",
+            "dist",
+            ".git",
+            ".local-state",
+            "__pycache__"
+          ]
+        }
+      ]
+    }
+  ]
+}

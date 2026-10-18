@@ -1,0 +1,7 @@
+#!/usr/bin/python3
+"""Source-tree launcher; installed RPM uses its own fixed module path."""
+from pathlib import Path
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parent/'src'))
+from folio_notepad.application import main
+raise SystemExit(main())
