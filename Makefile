@@ -3,7 +3,7 @@ DESTDIR ?=
 PYTHON ?= python3
 APPDIR = $(PREFIX)/share/folio-notepad
 
-.PHONY: test run install rpm clean
+.PHONY: test run install rpm srpm clean
 run:
 	./folio-notepad
 
@@ -27,6 +27,9 @@ install:
 
 rpm:
 	$(PYTHON) scripts/build_rpm.py
+
+srpm:
+	$(PYTHON) scripts/build_rpm.py --srpm
 
 clean:
 	rm -rf build

@@ -5,6 +5,7 @@ Summary:        Native notes editor with tables, images and drawings
 License:        GPL-3.0-or-later
 Source0:        %{name}-%{version}.tar.gz
 BuildArch:      noarch
+BuildRequires:  make
 Requires:       python3 >= 3.11
 Requires:       python3-pyside6 >= 6.8
 Recommends:     python3-enchant

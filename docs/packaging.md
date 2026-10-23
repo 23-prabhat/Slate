@@ -41,6 +41,35 @@ GitHub Actions builds have not been executed from this development environment. 
 
 References: [GitHub CLI in workflows](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-github-cli), [release creation and asset upload](https://cli.github.com/manual/gh_release_create).
 
+## Publish a DNF repository with Copr
+
+Copr builds source RPMs and hosts a DNF repository. It is a separate service from GitHub Releases. This repository now supports `make srpm`; creating a Copr account/project and uploading the package still need to be done by the maintainer.
+
+1. Register at [Fedora Accounts](https://accounts.fedoraproject.org/), complete account verification, and sign into [Copr](https://copr.fedorainfracloud.org/) with that account. Your personal Copr owner name is your Fedora account username, which can differ from your GitHub username. If you already have an account, sign in and check your profile/account menu.
+2. Create a project named `folio-notepad`. Use the GitHub repository as its homepage, describe the application, and enable the `fedora-44-x86_64` build target. Start with this supported target; other distributions/releases need their own dependency and runtime checks.
+3. Build the source package locally:
+
+   ```bash
+   cd ~/code/notepad
+   make srpm
+   ```
+
+   On Fedora 44, the output is `dist/folio-notepad-0.4.2-1.fc44.src.rpm`. If build tools are missing, install them first with `sudo dnf install rpm-build make python3`. The `.src.rpm` contains source and the build recipe; the existing `.noarch.rpm` is the end-user installer.
+4. In the Copr project, start a new build using **Direct Upload** and select that `.src.rpm`. Wait for a successful build for Fedora 44. If it fails, inspect the build log before sharing installation commands. Copr rebuilds the installer and publishes it in the project's repository.
+
+After a successful build, users enable the repository once and install the app:
+
+```bash
+sudo dnf copr enable YOUR_FEDORA_USERNAME/folio-notepad
+sudo dnf install folio-notepad
+```
+
+Replace `YOUR_FEDORA_USERNAME` with the actual project owner. If DNF does not recognize `copr`, install `dnf5-plugins` on Fedora 44. Users can launch **Folio Notepad** from their application menu. They do not clone the GitHub repository or build the app.
+
+For updates, increase the package Version or Release appropriately, rebuild the source RPM, and upload it again. Once a newer package is published, users receive it through normal DNF updates. Merely pushing changes to GitHub does not trigger Copr builds in this direct-upload setup. A Git webhook/SCM build pipeline is optional future work.
+
+See [Copr's source upload and account documentation](https://docs.copr.fedorainfracloud.org/user_documentation.html) and [Fedora's Copr repository guide](https://developer.fedoraproject.org/deployment/copr/copr-cli.html). Copr is a community repository; this does not add the package to Fedora's default repositories.
+
 ## Fedora RPM
 
 Run `make rpm` with Fedora's rpm-build and make installed. This creates a noarch package in `dist/`, declares `python3-pyside6 >= 6.8`, and recommends system spelling support. It contains the app, icon, desktop entry, custom `.folio` MIME type and AppStream metadata. It does not change the default editor or install kernel hooks. Install once using KDE's local package installer where supported, or `dnf install ./dist/<filename>.rpm`.

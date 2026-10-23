@@ -76,6 +76,7 @@ Runtime requirements: Python 3.11+ and PySide6 6.8+. Optional spelling: PyEnchan
 ```bash
 make test                  # Qt offscreen tests, including a real killed-process recovery test
 make rpm                   # build the Fedora RPM locally using rpm-build
+make srpm                  # build a source RPM to upload to Copr
 make install PREFIX=/tmp/folio-stage
 ```
 
